@@ -34,10 +34,9 @@ def mqtt_bridge_node():
     # load bridge parameters
     bridge_dict_keys = ["factory","msg_type","topic_from","topic_to"]
     bridge_params = []
-    total_bridges = mqtt_node.get_parameter("n_bridges").value
-    for i in range(total_bridges):
-        bridge_n = str((i % total_bridges) + 1)
-        bridge_param = mqtt_node.get_parameter('bridge.bridge'+bridge_n).value
+    bridges_list = filter(lambda key: key[:7] == "bridge.", mqtt_node._parameters.keys())
+    for bridge_name in bridges_list:
+        bridge_param = mqtt_node.get_parameter(bridge_name).value
         bridge_params.append(dict(zip(bridge_dict_keys,bridge_param)))
 
     #params = rospy.get_param("~", {})
